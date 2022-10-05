@@ -1,3 +1,17 @@
 .red {
   background-color: red;
 }
+
+.content {
+  padding: 20px;
+}
+
+.select {
+  max-width: 200px;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "antd";
+import { Button, Form, Select, Table } from "antd";
 import styles from "./MainAdministrator.module.scss";
 
 const columns = [
@@ -9,7 +9,7 @@ const columns = [
   },
   {
     title: "Last Name",
-    dataIndex: "lastname",
+    dataIndex: "lastName",
   },
   {
     title: "Age",
@@ -17,7 +17,7 @@ const columns = [
   },
   {
     title: "User Role",
-    dataIndex: "userrole",
+    dataIndex: "userRole",
   },
   {
     title: "Email Address",
@@ -53,13 +53,25 @@ const data = [
 const MainAdministrator = () => {
   return (
     <div>
-      <Table
-        rowClassName={(record, index) => (record.m ? styles.red : "")}
-        columns={columns}
-        dataSource={data}
-        bordered
-        pagination={false}
-      />
+      <div className={styles.content}>
+        <Form.Item label="Select">
+          <Select className={styles.select}>
+            <Select.Option value="demo">All offices</Select.Option>
+          </Select>
+        </Form.Item>
+        <Table
+          rowClassName={(record, index) => (record.m ? styles.red : "")}
+          columns={columns}
+          dataSource={data}
+          bordered
+          pagination={false}
+        />
+
+        <div className={styles.actions}>
+          <Button>Change Role</Button>
+          <Button>Enable/Disable Login</Button>
+        </div>
+      </div>
     </div>
   );
 };
