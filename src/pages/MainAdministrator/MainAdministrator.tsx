@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Select, Table } from "antd";
 import styles from "./MainAdministrator.module.scss";
+import AddUserModal from "components/AddUserModal/AddUserModal";
 
 const columns = [
   {
@@ -51,9 +52,25 @@ const data = [
 ];
 
 const MainAdministrator = () => {
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+
+  const openAddUserModal = () => {
+    setIsAddUserModalOpen(true);
+  };
+
+  const closeAddUserModal = () => {
+    setIsAddUserModalOpen(false);
+  };
+
   return (
     <div>
       <div className={styles.content}>
+        <div className={styles.headActions}>
+          <Button onClick={openAddUserModal}>Add User</Button>
+
+          <Button>Exit</Button>
+        </div>
+
         <Form.Item label="Select">
           <Select className={styles.select}>
             <Select.Option value="demo">All offices</Select.Option>
@@ -72,6 +89,8 @@ const MainAdministrator = () => {
           <Button>Enable/Disable Login</Button>
         </div>
       </div>
+
+      <AddUserModal isOpen={isAddUserModalOpen} onClose={closeAddUserModal} />
     </div>
   );
 };

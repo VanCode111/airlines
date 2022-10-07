@@ -1,18 +1,41 @@
 import React from "react";
 import { Button, Form, Input, Modal } from "antd";
 import styles from "./Auth.module.scss";
-import { login } from "http/auth";
 import CrashWindow from "components/CrashWindow.tsx/CrashWindow";
 import { useState } from "react";
+import { useLoginMutation } from "store/services/auth";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [form] = Form.useForm();
-  const [crashWindowOpen, setCrashWindowOpen] = useState(true);
+  const email = Form.useWatch("email", form);
+  const password = Form.useWatch("password", form);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [crashWindowOpen, setCrashWindowOpen] = useState(false);
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const handleError = (error: any) => {
+    const { status } = error;
+    switch (status) {
+      case 403:
+        setCrashWindowOpen(true);
+        break;
+    }
+  };
 
   const onFinish = async (values: any) => {
-    const data = await login(values);
-    console.log(data);
-    console.log(values);
+    try {
+      const data = await login(values).unwrap();
+      dispatch(setCredentials(data));
+      navigate("/main");
+    } catch (e) {
+      handleError(e);
+    }
   };
 
   const closeCrashWindow = () => {
@@ -23,8 +46,8 @@ const Auth = () => {
     <div className={styles.wrapper}>
       <Form form={form} name="control-hooks" onFinish={onFinish}>
         <Form.Item
-          name="username"
-          label="username"
+          name="email"
+          label="email"
           rules={[
             {
               required: true,
@@ -45,13 +68,18 @@ const Auth = () => {
           <Input type="password" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button loading={isLoading} type="primary" htmlType="submit">
             Login
           </Button>
         </Form.Item>
       </Form>
 
-      <CrashWindow isOpen={crashWindowOpen} onClose={closeCrashWindow} />
+      <CrashWindow
+        isOpen={crashWindowOpen}
+        onClose={closeCrashWindow}
+        email={email}
+        password={password}
+      />
     </div>
   );
 };
