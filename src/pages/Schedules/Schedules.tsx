@@ -1,8 +1,9 @@
-import React from "react";
-import { useGetSchedulesQuery } from "store/services/schedules";
+import React, { useEffect } from "react";
+import { useGetSchedulesMutation } from "store/services/schedules";
 import styles from "./Schedules.module.scss";
 import Filters from "./components/Filters/Filters";
 import { Table } from "antd";
+import axios from "axios";
 
 const columns = [
   {
@@ -44,19 +45,23 @@ const columns = [
 ];
 
 const Schedules = () => {
-  const { data, refetch, isLoading } = useGetSchedulesQuery(null);
+  const [gets, { data, isLoading }] = useGetSchedulesMutation();
+  useEffect(() => {
+    gets(null);
+  }, []);
 
   console.log(data);
-
   return (
     <div className={styles.schedules}>
       <Filters />
       {data}
+      {isLoading}
       <div className={styles.data}>
         <Table
           columns={columns}
           dataSource={data}
           bordered
+          loading={isLoading}
           pagination={false}
         />
       </div>

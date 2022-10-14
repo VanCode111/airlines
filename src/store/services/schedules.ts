@@ -1,20 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+import { API_URL } from "../../constants";
 
-export const api = createApi({
+export const scheduleApi = createApi({
+  tagTypes: ["Schedules"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://59ab-195-239-169-94.eu.ngrok.io/",
+    baseUrl: API_URL,
   }),
   endpoints: (builder) => ({
-    getSchedules: builder.query({
-      query: (params) => ({
-        url: "getAllAgeGroup",
-
-        mode: "no-cors",
-        params,
+    getSchedules: builder.mutation({
+      query: () => ({
+        url: "getSchedule",
+        method: "POST",
       }),
     }),
   }),
 });
 
-export const { useGetSchedulesQuery } = api;
+export const { useGetSchedulesMutation } = scheduleApi;

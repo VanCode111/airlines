@@ -1,25 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+import { API_URL } from "../../constants";
 
-export interface User {
-  first_name: string;
-  last_name: string;
-}
-
-export interface UserResponse {
-  user: User;
-  token: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export const api = createApi({
+export const authApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://59ab-195-239-169-94.eu.ngrok.io/",
+    baseUrl: API_URL,
   }),
+  tagTypes: ["Auth"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -38,4 +25,4 @@ export const api = createApi({
   }),
 });
 
-export const { useLoginMutation, useHandleCrashMutation } = api;
+export const { useLoginMutation, useHandleCrashMutation } = authApi;
