@@ -1,0 +1,11 @@
+.flightInfo {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.flightInfoItem {
+  & span {
+    font-weight: 600;
+  }
+}
