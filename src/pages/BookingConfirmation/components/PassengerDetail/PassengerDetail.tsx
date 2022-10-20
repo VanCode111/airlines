@@ -42,7 +42,7 @@ const PassengerDetail = () => {
             </Form.Item>
           </div>
 
-          <Button color="primary" className={styles.apply} htmlType="submit">
+          <Button color="primary" className={styles.add} htmlType="submit">
             Add passenger
           </Button>
         </Form>
