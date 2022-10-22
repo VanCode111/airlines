@@ -13,10 +13,13 @@ const slice = createSlice({
     setCredentials: (state, { payload }: PayloadAction<any>) => {
       state.user = payload;
     },
+    removeCredentials: (state, { payload }: PayloadAction<any>) => {
+      state.user = null;
+    },
   },
 });
 
-export const { setCredentials } = slice.actions;
+export const { setCredentials, removeCredentials } = slice.actions;
 
 export default slice.reducer;
 

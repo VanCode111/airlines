@@ -1,3 +1,6 @@
+.green {
+  background-color: rgb(72, 235, 72);
+}
 .red {
   background-color: red;
 }
@@ -20,4 +23,8 @@
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
+}
+
+.selected {
+  background-color: rgb(189, 189, 189);
 }

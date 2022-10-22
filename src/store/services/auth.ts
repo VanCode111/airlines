@@ -6,13 +6,19 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
   }),
-  tagTypes: ["Auth"],
+  reducerPath: "authApi",
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
         url: "login",
         method: "POST",
         body: credentials,
+      }),
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "logout",
+        method: "POST",
       }),
     }),
     handleCrash: builder.mutation({
@@ -25,4 +31,5 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useHandleCrashMutation } = authApi;
+export const { useLoginMutation, useHandleCrashMutation, useLogoutMutation } =
+  authApi;

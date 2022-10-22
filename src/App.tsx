@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Schedules from "pages/Schedules/Schedules";
 import Flights from "pages/Flights/Flights";
 import BookingConfirmation from "pages/BookingConfirmation/BookingConfirmation";
+import Summary from "pages/Summary/Summary";
 
 function App() {
   const { user } = useSelector((state: any) => state.auth);
@@ -17,11 +18,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Auth />} />
         <Route path="/main" element={<MainAdministrator />} />
+
+        <Route path="/" element={<Auth />} />
+
         <Route path="/schedules" element={<Schedules />} />
         <Route path="/flights" element={<Flights />} />
         <Route path="/confirmation" element={<BookingConfirmation />} />
+        <Route path="/summary" element={<Summary />} />
       </Routes>
     </BrowserRouter>
   );

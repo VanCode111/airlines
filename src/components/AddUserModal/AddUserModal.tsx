@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styles from "./AddUserModal.module.scss";
 import { Button, DatePicker, Form, Input, Modal, Radio, Select } from "antd";
+import { useGetOfficesQuery, useAddUserMutation } from "store/services/office";
 
 interface AddUserModalProps {
   isOpen: boolean;
@@ -9,9 +10,11 @@ interface AddUserModalProps {
 
 const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
   const [form] = Form.useForm();
+  const { data: officesData } = useGetOfficesQuery(null);
+  const [addUser, { isLoading }] = useAddUserMutation();
 
   const onFinish = async (values: any) => {
-    console.log(values);
+    addUser(values);
   };
 
   return (
@@ -25,7 +28,7 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
         layout="horizontal"
       >
         <Form.Item
-          name="email"
+          name="Email"
           label="Email address"
           rules={[
             {
@@ -36,7 +39,7 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="firstName"
+          name="FirstName"
           label="First Name"
           rules={[
             {
@@ -48,7 +51,7 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
         </Form.Item>
 
         <Form.Item
-          name="lastName"
+          name="LastName"
           label="Last Name"
           rules={[
             {
@@ -59,7 +62,7 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="office"
+          name="OfficeID"
           label="Office"
           rules={[
             {
@@ -68,10 +71,13 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
           ]}
         >
           <Select>
-            <Select.Option value="office">Offices</Select.Option>
+            {officesData?.map((item: any) => (
+              <Select.Option value={item}>{item}</Select.Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item
+          name="Birthdate"
           label="Birthday"
           rules={[
             {
@@ -82,7 +88,7 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
           <DatePicker />
         </Form.Item>
         <Form.Item
-          name="password"
+          name="Password"
           label="Password"
           rules={[
             {
@@ -94,7 +100,9 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
         </Form.Item>
         <div className={styles.buttons}>
           <Form.Item>
-            <Button htmlType="submit">Save</Button>
+            <Button htmlType="submit" loading={isLoading}>
+              Save
+            </Button>
           </Form.Item>
           <Button onClick={onClose}>Cancel</Button>
         </div>

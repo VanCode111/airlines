@@ -12,6 +12,8 @@ interface CrashWindowProps {
   isOpen: boolean;
   email: string;
   password: string;
+  lastLoginDate: string;
+  crashReasons: string[];
 }
 
 const CrashWindow: FC<CrashWindowProps> = ({
@@ -19,6 +21,8 @@ const CrashWindow: FC<CrashWindowProps> = ({
   isOpen,
   email,
   password,
+  lastLoginDate,
+  crashReasons,
 }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -47,6 +51,7 @@ const CrashWindow: FC<CrashWindowProps> = ({
       onCancel={onClose}
       closable={!(errorLoading || loginLoading)}
     >
+      <p>No logout detected for your last login on {lastLoginDate}</p>
       <Form form={form} name="control-hooks" onFinish={onFinish}>
         <Form.Item name="reason">
           <TextArea rows={4} />
@@ -60,8 +65,9 @@ const CrashWindow: FC<CrashWindowProps> = ({
           ]}
         >
           <Radio.Group>
-            <Radio value="software"> Software crash </Radio>
-            <Radio value="System crash"> System crash </Radio>
+            {crashReasons.map((item) => (
+              <Radio value={item}> {item}</Radio>
+            ))}
           </Radio.Group>
         </Form.Item>
         <Form.Item>

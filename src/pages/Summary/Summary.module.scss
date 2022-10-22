@@ -1,0 +1,37 @@
+.summary {
+  padding: 20px;
+
+  & .cell {
+    border: 1px solid black;
+  }
+
+  & table {
+    width: 100%;
+  }
+
+  & tr {
+    td,
+    th {
+      padding: 5px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  }
+
+  & td:first-child {
+    border: none;
+  }
+  & th:first-child {
+    border: none;
+  }
+
+  & .question {
+    font-weight: 600;
+  }
+}
+
+.hints {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

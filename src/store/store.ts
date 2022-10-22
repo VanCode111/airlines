@@ -1,9 +1,9 @@
 import { configureStore, ConfigureStoreOptions } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { api } from "./services/api";
 import { flightsApi } from "./services/flights";
 import authSlice from "./authSlice";
 import { authApi } from "./services/auth";
+import { officesApi } from "./services/office";
 
 console.log(authApi.reducerPath);
 
@@ -12,12 +12,17 @@ export const createStore = (
 ) =>
   configureStore({
     reducer: {
-      [api.reducerPath]: api.reducer,
+      [authApi.reducerPath]: authApi.reducer,
       [flightsApi.reducerPath]: flightsApi.reducer,
+      [officesApi.reducerPath]: officesApi.reducer,
       auth: authSlice,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware, flightsApi.middleware),
+      getDefaultMiddleware().concat(
+        authApi.middleware,
+        flightsApi.middleware,
+        officesApi.middleware
+      ),
     ...options,
   });
 
