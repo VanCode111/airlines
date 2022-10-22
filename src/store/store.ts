@@ -4,6 +4,7 @@ import { flightsApi } from "./services/flights";
 import authSlice from "./authSlice";
 import { authApi } from "./services/auth";
 import { officesApi } from "./services/office";
+import { scheduleApi } from "./services/schedules";
 
 console.log(authApi.reducerPath);
 
@@ -14,6 +15,7 @@ export const createStore = (
     reducer: {
       [authApi.reducerPath]: authApi.reducer,
       [flightsApi.reducerPath]: flightsApi.reducer,
+      [scheduleApi.reducerPath]: scheduleApi.reducer,
       [officesApi.reducerPath]: officesApi.reducer,
       auth: authSlice,
     },
@@ -21,7 +23,8 @@ export const createStore = (
       getDefaultMiddleware().concat(
         authApi.middleware,
         flightsApi.middleware,
-        officesApi.middleware
+        officesApi.middleware,
+        scheduleApi.middleware
       ),
     ...options,
   });

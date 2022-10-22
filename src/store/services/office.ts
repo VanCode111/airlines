@@ -48,6 +48,14 @@ export const officesApi = createApi({
       }),
       invalidatesTags: [{ type: "Offices", id: "LIST" }],
     }),
+    changeUserRole: builder.mutation({
+      query: (body: any) => ({
+        url: "changeUserRole",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Offices", id: "LIST" }],
+    }),
   }),
 });
 
@@ -56,4 +64,5 @@ export const {
   useGetUsersByOfficeQuery,
   useChangeBlockUserMutation,
   useAddUserMutation,
+  useChangeUserRoleMutation,
 } = officesApi;

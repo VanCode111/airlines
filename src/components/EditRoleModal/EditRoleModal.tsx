@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./EditRoleModal.module.scss";
 import { FC } from "react";
 import { Button, Form, Input, Modal, Radio, Select } from "antd";
-
+import { useChangeUserRoleMutation } from "store/services/office";
 interface EditRoleModalProps {
   userData: any;
   isOpen: boolean;
@@ -14,11 +14,13 @@ const EditRoleModal: FC<EditRoleModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const [changeUserRole] = useChangeUserRoleMutation();
   const [form] = Form.useForm();
 
   console.log(userData);
-  const onFinish = () => {
-    console.log(1125);
+  const onFinish = (values: any) => {
+    console.log(values);
+    changeUserRole({ ...values, email: userData?.email });
   };
 
   useEffect(() => {

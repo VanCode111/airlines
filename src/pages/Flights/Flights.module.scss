@@ -5,3 +5,26 @@
 .data {
   margin-top: 20px;
 }
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.confirmBooking {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: -20px;
+}
+
+.confirmCard {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.selected {
+  background-color: rgb(189, 189, 189);
+}

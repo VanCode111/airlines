@@ -1,70 +1,123 @@
-import React, { useEffect } from "react";
-import { useGetSchedulesMutation } from "store/services/schedules";
+import React, { useEffect, useState } from "react";
+import {
+  useChangeFlightConfirmMutation,
+  useGetSchedulesQuery,
+} from "store/services/schedules";
 import styles from "./Schedules.module.scss";
 import Filters from "./components/Filters/Filters";
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import axios from "axios";
+import { useGetAirportsCodesQuery } from "store/services/flights";
+import { convertDate } from "utils";
+import classNames from "classnames";
+import ScheduleEdit from "components/ScheduleEdit/ScheduleEdit";
 
 const columns = [
   {
     title: "Date",
-    dataIndex: "date",
+    dataIndex: "Date",
   },
   {
     title: "Time",
-    dataIndex: "date",
+    dataIndex: "Time",
   },
   {
     title: "From",
-    dataIndex: "date",
+    dataIndex: "from",
   },
   {
     title: "To",
-    dataIndex: "date",
+    dataIndex: "to",
   },
   {
     title: "Flight Number",
-    dataIndex: "date",
+    dataIndex: "FlightNumber",
   },
   {
     title: "Aircraft",
-    dataIndex: "date",
+    dataIndex: "aircraft",
   },
   {
     title: "Economy price",
-    dataIndex: "date",
+    dataIndex: "EconomyPrice",
   },
   {
     title: "Buisness price",
-    dataIndex: "date",
+    dataIndex: "businessClass",
   },
   {
     title: "First class price",
-    dataIndex: "date",
+    dataIndex: "firstClass",
   },
 ];
 
 const Schedules = () => {
-  const [gets, { data, isLoading }] = useGetSchedulesMutation();
-  useEffect(() => {
-    gets(null);
-  }, []);
+  const [filters, setFilters] = useState({});
+  const [changeFlightConfirm] = useChangeFlightConfirmMutation();
+  const [selectedFlight, setSelectedFlight] = useState<any>(null);
+  const [isScheduleEditOpen, setIsScheduleEditOpen] = useState(false);
+
+  const openScheduleEdit = () => {
+    setIsScheduleEditOpen(true);
+  };
+
+  const closeScheduleEdit = () => {
+    setIsScheduleEditOpen(false);
+  };
+
+  const { data, isLoading, isFetching } = useGetSchedulesQuery(filters);
+
+  const onChangeFlightConfirm = () => {
+    changeFlightConfirm({ id: selectedFlight?.ID });
+  };
+
+  const applyFilters = (values: any) => {
+    let { outbound } = values;
+    console.log(convertDate(outbound));
+    outbound = convertDate(outbound);
+    setFilters({ ...values, outbound });
+  };
 
   console.log(data);
   return (
     <div className={styles.schedules}>
-      <Filters />
-      {data}
-      {isLoading}
+      <Filters applyFilters={applyFilters} />
       <div className={styles.data}>
         <Table
           columns={columns}
           dataSource={data}
           bordered
-          loading={isLoading}
+          loading={isFetching}
           pagination={false}
+          rowClassName={(record, index) =>
+            classNames({
+              [styles.red]: record.Confirmed !== 1,
+              [styles.selected]: record === selectedFlight,
+            })
+          }
+          onRow={(record) => {
+            return { onClick: () => setSelectedFlight(record) };
+          }}
         />
       </div>
+      <div className={styles.buttons}>
+        <Button onClick={onChangeFlightConfirm} disabled={!selectedFlight}>
+          Cancel Flight
+        </Button>
+        <Button
+          className={styles.edit}
+          onClick={openScheduleEdit}
+          disabled={!selectedFlight}
+        >
+          Edit Flight
+        </Button>
+        <Button>Import Changes</Button>
+      </div>
+      <ScheduleEdit
+        onClose={closeScheduleEdit}
+        flightData={selectedFlight}
+        isOpen={isScheduleEditOpen}
+      />
     </div>
   );
 };

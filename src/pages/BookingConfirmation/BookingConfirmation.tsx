@@ -5,31 +5,32 @@ import FlightInfo from "./components/FlightInfo/FlightInfo";
 import PassengerDetail from "./components/PassengerDetail/PassengerDetail";
 import { Button, Table } from "antd";
 import BillingConfirmationModal from "components/BillingConfirmationModal/BillingConfirmationModal";
+import { useLocation } from "react-router-dom";
 
 const columns = [
   {
     title: "Firstname",
-    dataIndex: "from",
+    dataIndex: "firstName",
   },
   {
     title: "Lastname",
-    dataIndex: "to",
+    dataIndex: "lastName",
   },
   {
     title: "Birthday",
-    dataIndex: "Date",
+    dataIndex: "birthday",
   },
   {
     title: "Passport number",
-    dataIndex: "Time",
+    dataIndex: "passport",
   },
   {
     title: "Passport Country",
-    dataIndex: "FlightNumbers",
+    dataIndex: "country",
   },
   {
     title: "Phone",
-    dataIndex: "Price",
+    dataIndex: "phone",
   },
 ];
 
@@ -37,6 +38,7 @@ const data: any = [];
 
 const BookingConfirmation: FC = () => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [addedPassengers, setAddedPassengers] = useState<any>([]);
 
   const closeConfirmationModal = () => {
     setIsConfirmationModalOpen(false);
@@ -46,31 +48,40 @@ const BookingConfirmation: FC = () => {
     setIsConfirmationModalOpen(true);
   };
 
+  const addPassenger = (passenger: any) => {
+    setAddedPassengers((prev: any) => [...prev, passenger]);
+  };
+
+  const { state } = useLocation();
+  const { selectedReturn, selectedOutbound, cabinType } = state;
+
   return (
     <div className={styles.confirmation}>
       <FlightInfo
-        from="from"
-        to="to"
-        cabinType="to"
-        date="to"
-        flightNumber="to"
+        from={selectedOutbound.from}
+        to={selectedOutbound.to}
+        cabinType={cabinType}
+        date={selectedOutbound.Date}
+        flightNumber={selectedOutbound.FlightNumbers}
         label="Outbound flight details"
       />
-      <FlightInfo
-        from="from"
-        to="to"
-        cabinType="to"
-        date="to"
-        flightNumber="to"
-        label="Outbound flight details"
-      />
+      {selectedReturn && (
+        <FlightInfo
+          from={selectedReturn.from}
+          to={selectedReturn.to}
+          cabinType={cabinType}
+          date={selectedReturn.Date}
+          flightNumber={selectedReturn.FlightNumbers}
+          label="Return flight details"
+        />
+      )}
 
-      <PassengerDetail />
+      <PassengerDetail addPassenger={addPassenger} />
       <div className={styles.table}>
         <span>Passengers list</span>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={addedPassengers}
           bordered
           pagination={false}
         />

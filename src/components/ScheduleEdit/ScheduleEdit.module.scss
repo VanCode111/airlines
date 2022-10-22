@@ -1,0 +1,21 @@
+.flightInfo {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.flightInfoItem {
+  & span {
+    font-weight: 600;
+  }
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}

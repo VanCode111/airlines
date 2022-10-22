@@ -27,13 +27,16 @@ const FlightInfo: FC<FlightInfoProps> = ({
           From: <span>{from}</span>
         </div>
         <div className={styles.flightInfoItem}>
-          From: <span>{from}</span>
+          To: <span>{to}</span>
         </div>
         <div className={styles.flightInfoItem}>
-          From: <span>{from}</span>
+          cabin Type: <span>{cabinType}</span>
         </div>
         <div className={styles.flightInfoItem}>
-          From: <span>{from}</span>
+          Date: <span>{date}</span>
+        </div>
+        <div className={styles.flightInfoItem}>
+          Flight Number: <span>{flightNumber}</span>
         </div>
       </div>
     </Card>

@@ -1,13 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./PassengerDetail.module.scss";
 import Card from "components/Card/Card";
 import { Button, DatePicker, Form, Input, Select } from "antd";
 
-const PassengerDetail = () => {
+interface PassengerDetailProps {
+  addPassenger: (passenger: any) => void;
+}
+
+const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
   const [form] = Form.useForm();
 
-  const onFinish = () => {
-    console.log("finish");
+  const onFinish = (values: any) => {
+    addPassenger(values);
+    form.resetFields();
   };
 
   return (
@@ -20,24 +25,24 @@ const PassengerDetail = () => {
           className={styles.filters}
         >
           <div className={styles.formItems}>
-            <Form.Item label="From" name="from">
+            <Form.Item label="First Name" name="firstName">
               <Input />
             </Form.Item>
-            <Form.Item label="From" name="from">
+            <Form.Item label="LastName" name="lastName">
               <Input />
             </Form.Item>
-            <Form.Item label="Return" name="returnDate">
+            <Form.Item label="Birthday" name="birthday">
               <DatePicker />
             </Form.Item>
-            <Form.Item label="From" name="from">
+            <Form.Item label="Passport" name="passport">
               <Input />
             </Form.Item>
-            <Form.Item label="From" name="from">
+            <Form.Item label="Passport country" name="country">
               <Select className={styles.select}>
                 <Select.Option value={1}>{1}</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item label="Phone" name="from">
+            <Form.Item label="Phone" name="phone">
               <Input />
             </Form.Item>
           </div>

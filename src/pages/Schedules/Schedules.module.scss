@@ -5,3 +5,22 @@
 .data {
   margin-top: 20px;
 }
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.edit {
+  margin-right: auto;
+}
+
+.red {
+  background-color: red;
+}
+
+.selected {
+  background-color: rgb(189, 189, 189);
+}
