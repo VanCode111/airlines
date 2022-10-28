@@ -28,6 +28,13 @@ export const flightsApi = createApi({
         method: "POST",
       }),
     }),
+    createTickets: builder.mutation({
+      query: (body) => ({
+        url: "createTickets",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -35,4 +42,5 @@ export const {
   useGetFlightsForBookingQuery,
   useGetAirportsCodesQuery,
   useGetCabinTypesQuery,
+  useCreateTicketsMutation,
 } = flightsApi;

@@ -33,7 +33,8 @@ const CrashWindow: FC<CrashWindowProps> = ({
   const onFinish = async (values: any) => {
     try {
       await handleCrash({ email, ...values });
-      const data = await login({ email, password });
+      const data = await login({ email, password: +password });
+      console.log(data);
       if ("data" in data) {
         dispatch(setCredentials(data.data));
       }

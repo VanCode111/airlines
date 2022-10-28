@@ -65,7 +65,10 @@ const Auth = () => {
 
   const onFinish = async (values: any) => {
     try {
-      const data = await login(values).unwrap();
+      const data: any = await login({
+        ...values,
+        password: +values.password,
+      }).unwrap();
       dispatch(setCredentials(data));
       navigate("/main");
     } catch (e) {

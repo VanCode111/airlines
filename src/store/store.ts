@@ -6,6 +6,7 @@ import { authApi } from "./services/auth";
 import { officesApi } from "./services/office";
 import { scheduleApi } from "./services/schedules";
 import { summaryApi } from "./services/summary";
+import { amenitiesApi } from "./services/amenities";
 
 console.log(authApi.reducerPath);
 
@@ -19,6 +20,7 @@ export const createStore = (
       [scheduleApi.reducerPath]: scheduleApi.reducer,
       [officesApi.reducerPath]: officesApi.reducer,
       [summaryApi.reducerPath]: summaryApi.reducer,
+      [amenitiesApi.reducerPath]: amenitiesApi.reducer,
       auth: authSlice,
     },
     middleware: (getDefaultMiddleware) =>
@@ -27,7 +29,8 @@ export const createStore = (
         flightsApi.middleware,
         officesApi.middleware,
         scheduleApi.middleware,
-        summaryApi.middleware
+        summaryApi.middleware,
+        amenitiesApi.middleware
       ),
     ...options,
   });

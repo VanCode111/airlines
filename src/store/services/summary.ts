@@ -26,7 +26,37 @@ export const summaryApi = createApi({
             ]
           : [{ type: "summary", id: "LIST" }],
     }),
+    getAllAgeGroup: builder.query({
+      query: () => ({
+        url: "getAllAgeGroup",
+        method: "POST",
+      }),
+    }),
+    getAllGenders: builder.query({
+      query: () => ({
+        url: "getAllGenders",
+        method: "POST",
+      }),
+    }),
+    getSummaryTimePeriods: builder.query({
+      query: () => ({
+        url: "getSummaryTimePeriods",
+        method: "POST",
+      }),
+    }),
+    getDefaultSummary: builder.query({
+      query: () => ({
+        url: "getDefaultSummary",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useGetAdvancedInformationQuery } = summaryApi;
+export const {
+  useGetAdvancedInformationQuery,
+  useGetAllGendersQuery,
+  useGetAllAgeGroupQuery,
+  useGetSummaryTimePeriodsQuery,
+  useGetDefaultSummaryQuery,
+} = summaryApi;

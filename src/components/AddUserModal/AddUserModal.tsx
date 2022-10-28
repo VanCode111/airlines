@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import styles from "./AddUserModal.module.scss";
 import { Button, DatePicker, Form, Input, Modal, Radio, Select } from "antd";
 import { useGetOfficesQuery, useAddUserMutation } from "store/services/office";
+import { convertDate } from "utils";
 
 interface AddUserModalProps {
   isOpen: boolean;
@@ -14,7 +15,7 @@ const AddUserModal: FC<AddUserModalProps> = ({ isOpen, onClose }) => {
   const [addUser, { isLoading }] = useAddUserMutation();
 
   const onFinish = async (values: any) => {
-    addUser(values);
+    addUser({ ...values, Birthdate: convertDate(values.Birthdate) });
   };
 
   return (

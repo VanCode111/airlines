@@ -29,7 +29,7 @@ const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
               <Input />
             </Form.Item>
             <Form.Item label="LastName" name="lastName">
-              <Input />
+              <Input type="number" />
             </Form.Item>
             <Form.Item label="Birthday" name="birthday">
               <DatePicker />

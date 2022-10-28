@@ -98,6 +98,9 @@ const BookingConfirmation: FC = () => {
       </div>
       <BillingConfirmationModal
         isOpen={isConfirmationModalOpen}
+        passengers={addedPassengers}
+        selectedOutbound={selectedOutbound}
+        selectedReturn={selectedReturn}
         onClose={closeConfirmationModal}
       />
     </div>

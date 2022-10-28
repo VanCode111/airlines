@@ -5,7 +5,12 @@ import { Checkbox, DatePicker, Form, Select, Table } from "antd";
 import { mockSummary } from "../../constants";
 import { colors } from "../../constants";
 import DiagramHints from "components/DiagramHints/DiagramHints";
-import { useGetAdvancedInformationQuery } from "store/services/summary";
+import {
+  useGetAdvancedInformationQuery,
+  useGetAllAgeGroupQuery,
+  useGetAllGendersQuery,
+  useGetSummaryTimePeriodsQuery,
+} from "store/services/summary";
 import { Spin } from "antd";
 import { convertDate } from "utils";
 
@@ -27,13 +32,17 @@ const Summary = () => {
   const date = Form.useWatch("date", form);
   const isAges = Form.useWatch("isAges", form);
   const isGenders = Form.useWatch("isGenders", form);
+  const gender = Form.useWatch("gender", form);
+  const age = Form.useWatch("age", form);
 
-  console.log(date);
+  const { data: genders } = useGetAllGendersQuery(null);
+  const { data: ages } = useGetAllAgeGroupQuery(null);
+  const { data: timePeriods } = useGetSummaryTimePeriodsQuery(null);
 
   const { data, isFetching } = useGetAdvancedInformationQuery({
-    date: date ? convertDate(date) : "all",
-    age: "all",
-    gender: "all",
+    date: date ? date : "all",
+    age,
+    gender,
   });
 
   const hints = data
@@ -48,7 +57,11 @@ const Summary = () => {
     <div className={styles.summary}>
       <Form form={form}>
         <Form.Item name="date" label="Time period">
-          <DatePicker />
+          <Select>
+            {timePeriods?.map((item: any) => (
+              <Select.Option value={item}>{item}</Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </Form>
 
@@ -70,8 +83,8 @@ const Summary = () => {
             <th>Total</th>
             {isGenders && (
               <>
-                <th>Age</th>
-                <th>Cabin Type</th>
+                <th>Male</th>
+                <th>Female</th>
               </>
             )}
 
@@ -139,23 +152,34 @@ const Summary = () => {
 
       <Form
         form={form}
-        initialValues={{ isAges: true, isGenders: true }}
+        initialValues={{
+          isAges: true,
+          isGenders: true,
+          gender: "all",
+          age: "all",
+        }}
         className={styles.selects}
       >
         <Form.Item name="isGenders" valuePropName="checked">
           <Checkbox>Gender</Checkbox>
         </Form.Item>
-        <Form.Item label="Genders" className={styles.select}>
+        <Form.Item label="Genders" className={styles.select} name="gender">
           <Select disabled={!isGenders}>
-            <Select.Option value="demo">Demo</Select.Option>
+            <Select.Option value="all">All genders</Select.Option>
+            {genders?.map((item: any) => (
+              <Select.Option value={item}>{item}</Select.Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item name="isAges" valuePropName="checked">
           <Checkbox>Age</Checkbox>
         </Form.Item>
-        <Form.Item label="Ages" className={styles.select}>
+        <Form.Item label="Ages" className={styles.select} name="age">
           <Select disabled={!isAges}>
-            <Select.Option value="demo">Age</Select.Option>
+            <Select.Option value="all">All ages</Select.Option>
+            {ages?.map((item: any) => (
+              <Select.Option value={item}>{item}</Select.Option>
+            ))}
           </Select>
         </Form.Item>
       </Form>
