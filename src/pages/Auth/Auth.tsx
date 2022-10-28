@@ -38,10 +38,12 @@ const Auth = () => {
   };
 
   const handleWrongCredentials = () => {
+    console.log(111111);
     const countWrongTry = localStorage.getItem("countWrongTry") || 0;
     if (+countWrongTry >= 3) {
       localStorage.setItem("countWrongTry", "0");
       localStorage.setItem("blockedAuthDate", `${Date.now() + blockedMsDelay}`);
+      console.log("aaaaa");
       blockAuth(blockedMsDelay);
     } else {
       localStorage.setItem("countWrongTry", `${+countWrongTry + 1}`);
@@ -49,8 +51,8 @@ const Auth = () => {
   };
 
   const handleError = (error: any) => {
-    const { status, data } = error;
-    switch (status) {
+    const { originalStatus, status, data } = error;
+    switch (originalStatus || status) {
       case 403:
         setCrashData(data);
         setCrashWindowOpen(true);

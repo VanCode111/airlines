@@ -5,6 +5,7 @@ import authSlice from "./authSlice";
 import { authApi } from "./services/auth";
 import { officesApi } from "./services/office";
 import { scheduleApi } from "./services/schedules";
+import { summaryApi } from "./services/summary";
 
 console.log(authApi.reducerPath);
 
@@ -17,6 +18,7 @@ export const createStore = (
       [flightsApi.reducerPath]: flightsApi.reducer,
       [scheduleApi.reducerPath]: scheduleApi.reducer,
       [officesApi.reducerPath]: officesApi.reducer,
+      [summaryApi.reducerPath]: summaryApi.reducer,
       auth: authSlice,
     },
     middleware: (getDefaultMiddleware) =>
@@ -24,7 +26,8 @@ export const createStore = (
         authApi.middleware,
         flightsApi.middleware,
         officesApi.middleware,
-        scheduleApi.middleware
+        scheduleApi.middleware,
+        summaryApi.middleware
       ),
     ...options,
   });

@@ -35,3 +35,21 @@
   justify-content: center;
   margin-top: 20px;
 }
+
+.selects {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 40px;
+  max-width: 600px;
+  gap: 20px;
+}
+
+.select {
+  width: 100%;
+}
+
+.spin {
+  display: block;
+  margin: 0 auto;
+}

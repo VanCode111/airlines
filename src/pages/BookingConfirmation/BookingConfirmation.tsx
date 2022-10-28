@@ -52,19 +52,23 @@ const BookingConfirmation: FC = () => {
     setAddedPassengers((prev: any) => [...prev, passenger]);
   };
 
-  const { state } = useLocation();
+  let { state } = useLocation();
+  state = state || {};
   const { selectedReturn, selectedOutbound, cabinType } = state;
 
   return (
     <div className={styles.confirmation}>
-      <FlightInfo
-        from={selectedOutbound.from}
-        to={selectedOutbound.to}
-        cabinType={cabinType}
-        date={selectedOutbound.Date}
-        flightNumber={selectedOutbound.FlightNumbers}
-        label="Outbound flight details"
-      />
+      {selectedOutbound && (
+        <FlightInfo
+          from={selectedOutbound.from}
+          to={selectedOutbound.to}
+          cabinType={cabinType}
+          date={selectedOutbound.Date}
+          flightNumber={selectedOutbound.FlightNumbers}
+          label="Outbound flight details"
+        />
+      )}
+
       {selectedReturn && (
         <FlightInfo
           from={selectedReturn.from}
