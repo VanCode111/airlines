@@ -42,6 +42,13 @@ export const scheduleApi = createApi({
       }),
       invalidatesTags: [{ type: "Schedules", id: "LIST" }],
     }),
+    loadFromFile: builder.mutation({
+      query: (body: any) => ({
+        url: "loadFromFile",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -49,4 +56,5 @@ export const {
   useGetSchedulesQuery,
   useChangeFlightConfirmMutation,
   useUpdateFlightMutation,
+  useLoadFromFileMutation,
 } = scheduleApi;

@@ -11,6 +11,7 @@ import { useGetAirportsCodesQuery } from "store/services/flights";
 import { convertDate } from "utils";
 import classNames from "classnames";
 import ScheduleEdit from "components/ScheduleEdit/ScheduleEdit";
+import ImportChangesModal from "components/ImportChangesModal/ImportChangesModal";
 
 const columns = [
   {
@@ -56,6 +57,15 @@ const Schedules = () => {
   const [changeFlightConfirm] = useChangeFlightConfirmMutation();
   const [selectedFlight, setSelectedFlight] = useState<any>(null);
   const [isScheduleEditOpen, setIsScheduleEditOpen] = useState(false);
+  const [isChangesModalOpen, setIsChangesModalOpen] = useState(false);
+
+  const openChangesModal = () => {
+    setIsChangesModalOpen(true);
+  };
+
+  const closeChangesModal = () => {
+    setIsChangesModalOpen(false);
+  };
 
   const openScheduleEdit = () => {
     setIsScheduleEditOpen(true);
@@ -65,7 +75,12 @@ const Schedules = () => {
     setIsScheduleEditOpen(false);
   };
 
-  const { data, isLoading, isFetching } = useGetSchedulesQuery(filters);
+  const { data, isLoading, isFetching, refetch } =
+    useGetSchedulesQuery(filters);
+
+  const updateList = () => {
+    refetch();
+  };
 
   const onChangeFlightConfirm = () => {
     changeFlightConfirm({ id: selectedFlight?.ID });
@@ -111,12 +126,17 @@ const Schedules = () => {
         >
           Edit Flight
         </Button>
-        <Button>Import Changes</Button>
+        <Button onClick={openChangesModal}>Import Changes</Button>
       </div>
       <ScheduleEdit
         onClose={closeScheduleEdit}
         flightData={selectedFlight}
         isOpen={isScheduleEditOpen}
+      />
+      <ImportChangesModal
+        updateList={updateList}
+        isOpen={isChangesModalOpen}
+        onClose={closeChangesModal}
       />
     </div>
   );
