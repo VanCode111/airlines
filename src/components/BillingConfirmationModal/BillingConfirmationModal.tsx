@@ -24,15 +24,16 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
 
   const createDataForTicket = () => {
     const returnFlights =
-      selectedReturn?.FlightNumbers.map((item: any) => ({
-        flightNumber: item,
+      selectedReturn?.FlightNumbers[0].map((item: any) => ({
+        flightNumber: +item,
         date: selectedReturn.Date,
       })) || [];
     const outboundFlights =
-      selectedOutbound?.FlightNumbers.map((item: any) => ({
-        flightNumber: item,
+      selectedOutbound?.FlightNumbers[0].map((item: any) => ({
+        flightNumber: +item,
         date: selectedOutbound.Date,
       })) || [];
+    console.log(outboundFlights);
     return { passengers, flights: [...returnFlights, ...outboundFlights] };
   };
 

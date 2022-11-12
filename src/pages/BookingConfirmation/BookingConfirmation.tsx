@@ -49,6 +49,7 @@ const BookingConfirmation: FC = () => {
   };
 
   const addPassenger = (passenger: any) => {
+    passenger = { ...passenger, passport: +passenger.passport };
     setAddedPassengers((prev: any) => [...prev, passenger]);
   };
 

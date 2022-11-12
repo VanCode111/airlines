@@ -12,6 +12,7 @@ const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
 
   const onFinish = (values: any) => {
     addPassenger(values);
+    console.log(values);
     form.resetFields();
   };
 
@@ -29,7 +30,7 @@ const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
               <Input />
             </Form.Item>
             <Form.Item label="LastName" name="lastName">
-              <Input type="number" />
+              <Input />
             </Form.Item>
             <Form.Item label="Birthday" name="birthday">
               <DatePicker />
@@ -39,7 +40,7 @@ const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
             </Form.Item>
             <Form.Item label="Passport country" name="country">
               <Select className={styles.select}>
-                <Select.Option value={1}>{1}</Select.Option>
+                <Select.Option value={"Albania"}>{"Albania"}</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item label="Phone" name="phone">
