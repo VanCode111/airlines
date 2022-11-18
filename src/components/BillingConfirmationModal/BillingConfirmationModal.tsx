@@ -1,5 +1,6 @@
 import { Button, Form, Modal, Radio } from "antd";
 import React, { FC } from "react";
+import { useSelector } from "react-redux";
 import { useCreateTicketsMutation } from "store/services/flights";
 import styles from "./BillingConfirmationModal.module.scss";
 
@@ -9,6 +10,7 @@ interface BillingConfirmationModalProps {
   passengers: any;
   selectedOutbound: any;
   selectedReturn: any;
+  cabinType: any;
 }
 
 const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
@@ -17,10 +19,13 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
   selectedOutbound,
   selectedReturn,
   passengers,
+  cabinType,
 }) => {
   const [form] = Form.useForm();
 
   const [createTickets, { isLoading }] = useCreateTicketsMutation();
+  const user = useSelector((state: any) => state.auth.user);
+  console.log(user);
 
   const createDataForTicket = () => {
     const returnFlights =
@@ -34,7 +39,12 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
         date: selectedOutbound.Date,
       })) || [];
     console.log(outboundFlights);
-    return { passengers, flights: [...returnFlights, ...outboundFlights] };
+    return {
+      passengers,
+      email: user.email,
+      flights: [...returnFlights, ...outboundFlights],
+      cabinType,
+    };
   };
 
   const onFinish = () => {

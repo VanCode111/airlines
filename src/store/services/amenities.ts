@@ -16,7 +16,25 @@ export const amenitiesApi = createApi({
         body,
       }),
     }),
+    getAmetitesForTicket: builder.query({
+      query: (body: any) => ({
+        url: "getAmetitesForTicket",
+        method: "POST",
+        body,
+      }),
+    }),
+    editAmentitesToTicket: builder.mutation({
+      query: (body: any) => ({
+        url: "editAmentitesToTicket",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetTicketsByReferenceQuery } = amenitiesApi;
+export const {
+  useGetTicketsByReferenceQuery,
+  useLazyGetAmetitesForTicketQuery,
+  useEditAmentitesToTicketMutation,
+} = amenitiesApi;
