@@ -1,9 +1,9 @@
-import { Button, Form, Modal, Radio } from "antd";
+import { Button, Form, Modal, Radio, notification } from "antd";
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useCreateTicketsMutation } from "store/services/flights";
 import styles from "./BillingConfirmationModal.module.scss";
-
 interface BillingConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,10 +22,13 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
   cabinType,
 }) => {
   const [form] = Form.useForm();
-
+  const navigate = useNavigate();
   const [createTickets, { isLoading }] = useCreateTicketsMutation();
   const user = useSelector((state: any) => state.auth.user);
   console.log(user);
+  const price =
+    (selectedOutbound?.Price || 0 + selectedReturn?.Price || 0) *
+    passengers.length;
 
   const createDataForTicket = () => {
     const returnFlights =
@@ -47,8 +50,15 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
     };
   };
 
-  const onFinish = () => {
-    createTickets(createDataForTicket());
+  const onFinish = async () => {
+    try {
+      await createTickets(createDataForTicket());
+      notification.success({ message: "Билеты успешно оформлены" });
+      navigate("/flights");
+    } catch (e) {
+      console.log(e);
+      notification.error({ message: "Ошибка" });
+    }
   };
 
   return (
@@ -58,7 +68,7 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
       open={isOpen}
       onCancel={onClose}
     >
-      <div>Total amount: 1000$</div>
+      <div>Total amount: {price}$</div>
       <Form form={form} onFinish={onFinish}>
         <Form.Item label="Paid using" name="paidUsing">
           <Radio.Group>
@@ -68,7 +78,9 @@ const BillingConfirmationModal: FC<BillingConfirmationModalProps> = ({
           </Radio.Group>
         </Form.Item>
         <div className={styles.buttons}>
-          <Button htmlType="submit">Issue tickets</Button>
+          <Button htmlType="submit" loading={isLoading}>
+            Issue tickets
+          </Button>
           <Button onClick={onClose}>Cancel</Button>
         </div>
       </Form>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, Modal, notification } from "antd";
 import styles from "./Auth.module.scss";
 import CrashWindow from "components/CrashWindow.tsx/CrashWindow";
 import { useState } from "react";
@@ -39,6 +39,7 @@ const Auth = () => {
 
   const handleWrongCredentials = () => {
     console.log(111111);
+    notification.error({ message: "Неверный логин или пароль" });
     const countWrongTry = localStorage.getItem("countWrongTry") || 0;
     if (+countWrongTry >= 3) {
       localStorage.setItem("countWrongTry", "0");
@@ -60,6 +61,8 @@ const Auth = () => {
       case 404:
         handleWrongCredentials();
         break;
+      case 423:
+        notification.error({ message: "Аккаунт заблокирован" });
     }
   };
 
@@ -71,8 +74,9 @@ const Auth = () => {
       }).unwrap();
       dispatch(setCredentials(data));
       navigate("/main");
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
+
       handleError(e);
     }
   };

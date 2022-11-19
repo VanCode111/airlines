@@ -13,6 +13,7 @@ import DefaultSummary from "pages/DefaultSummary/DefaultSummary";
 import Amenities from "pages/Amenities/Amenities";
 import UserMain from "pages/UserMain/UserMain";
 import Layout from "components/Layout/Layout";
+import ShortSummary from "pages/ShortSummary/ShortSummary";
 
 function App() {
   const { user } = useSelector((state: any) => state.auth);
@@ -22,14 +23,24 @@ function App() {
     <BrowserRouter>
       <Routes>
         {user?.role === "Administrator" && (
-          <Route
-            path="/main"
-            element={
-              <Layout>
-                <MainAdministrator />
-              </Layout>
-            }
-          />
+          <>
+            <Route
+              path="/main"
+              element={
+                <Layout>
+                  <MainAdministrator />
+                </Layout>
+              }
+            />
+            <Route
+              path="/shortSummary"
+              element={
+                <Layout>
+                  <ShortSummary />
+                </Layout>
+              }
+            />
+          </>
         )}
 
         {user?.role === "User" && (

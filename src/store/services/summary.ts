@@ -50,6 +50,24 @@ export const summaryApi = createApi({
         method: "POST",
       }),
     }),
+    getFreeSeats: builder.query({
+      query: () => ({
+        url: "getFreeSeats",
+        method: "POST",
+      }),
+    }),
+    getReport: builder.query({
+      query: () => ({
+        url: "getReport",
+        method: "POST",
+      }),
+    }),
+    getAverageSeatsPrice: builder.query({
+      query: () => ({
+        url: "getAverageSeatsPrice",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -59,4 +77,7 @@ export const {
   useGetAllAgeGroupQuery,
   useGetSummaryTimePeriodsQuery,
   useGetDefaultSummaryQuery,
+  useGetFreeSeatsQuery,
+  useGetReportQuery,
+  useGetAverageSeatsPriceQuery,
 } = summaryApi;

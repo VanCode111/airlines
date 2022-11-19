@@ -79,7 +79,9 @@ const MainAdministrator = () => {
         <div className={styles.headActions}>
           <Button onClick={openAddUserModal}>Add User</Button>
 
-          <Button onClick={logout}>Exit</Button>
+          <Button onClick={logout} danger>
+            Exit
+          </Button>
         </div>
         <Form form={form} initialValues={{ offices: "all" }}>
           <Form.Item label="Offices" name="offices">

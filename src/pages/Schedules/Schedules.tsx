@@ -116,7 +116,11 @@ const Schedules = () => {
         />
       </div>
       <div className={styles.buttons}>
-        <Button onClick={onChangeFlightConfirm} disabled={!selectedFlight}>
+        <Button
+          danger
+          onClick={onChangeFlightConfirm}
+          disabled={!selectedFlight}
+        >
           Cancel Flight
         </Button>
         <Button

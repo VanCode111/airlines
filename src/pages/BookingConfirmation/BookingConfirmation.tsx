@@ -6,6 +6,7 @@ import PassengerDetail from "./components/PassengerDetail/PassengerDetail";
 import { Button, Table } from "antd";
 import BillingConfirmationModal from "components/BillingConfirmationModal/BillingConfirmationModal";
 import { useLocation } from "react-router-dom";
+import classNames from "classnames";
 
 const columns = [
   {
@@ -39,6 +40,14 @@ const data: any = [];
 const BookingConfirmation: FC = () => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [addedPassengers, setAddedPassengers] = useState<any>([]);
+  const [selectedPessanger, setSelectedPessanger] = useState(null);
+
+  const removePassanger = () => {
+    setAddedPassengers((prev: any) =>
+      prev.filter((item: any) => item !== selectedPessanger)
+    );
+    setSelectedPessanger(null);
+  };
 
   const closeConfirmationModal = () => {
     setIsConfirmationModalOpen(false);
@@ -49,7 +58,12 @@ const BookingConfirmation: FC = () => {
   };
 
   const addPassenger = (passenger: any) => {
-    passenger = { ...passenger, passport: +passenger.passport };
+    console.log(passenger);
+    passenger = {
+      ...passenger,
+      passport: +passenger.passport,
+      birthday: passenger.birthday.format("YYYY-MM-DD"),
+    };
     setAddedPassengers((prev: any) => [...prev, passenger]);
   };
 
@@ -85,12 +99,26 @@ const BookingConfirmation: FC = () => {
       <div className={styles.table}>
         <span>Passengers list</span>
         <Table
+          rowClassName={(record, index) =>
+            classNames({
+              [styles.selected]: record === selectedPessanger,
+            })
+          }
           columns={columns}
           dataSource={addedPassengers}
           bordered
           pagination={false}
+          onRow={(record) => {
+            return { onClick: () => setSelectedPessanger(record) };
+          }}
         />
-        <Button className={styles.remove}>Remove passenger</Button>
+        <Button
+          className={styles.remove}
+          onClick={removePassanger}
+          disabled={!selectedPessanger}
+        >
+          Remove passenger
+        </Button>
       </div>
 
       <div className={styles.buttons}>

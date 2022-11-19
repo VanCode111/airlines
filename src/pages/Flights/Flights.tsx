@@ -157,22 +157,21 @@ const Flights = () => {
           />
         </div>
       )}
-      {selectedReturn ||
-        (selectedOutbound && (
-          <div className={styles.confirmCard}>
-            <Card label="Confirm booking for">
-              <div className={styles.confirmBooking}>
-                <Form.Item label="Passengers">
-                  <Input
-                    value={amountPassengers}
-                    onChange={(e) => setAmountPassengers(e.target.value)}
-                  />
-                </Form.Item>
-                <Button onClick={bookFlight}>Book flight</Button>
-              </div>
-            </Card>
-          </div>
-        ))}
+      {(Boolean(selectedReturn) || selectedOutbound) && (
+        <div className={styles.confirmCard}>
+          <Card label="Confirm booking for">
+            <div className={styles.confirmBooking}>
+              <Form.Item label="Passengers">
+                <Input
+                  value={amountPassengers}
+                  onChange={(e) => setAmountPassengers(e.target.value)}
+                />
+              </Form.Item>
+              <Button onClick={bookFlight}>Book flight</Button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
