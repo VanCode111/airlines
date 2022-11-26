@@ -14,98 +14,109 @@ import Amenities from "pages/Amenities/Amenities";
 import UserMain from "pages/UserMain/UserMain";
 import Layout from "components/Layout/Layout";
 import ShortSummary from "pages/ShortSummary/ShortSummary";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   const { user } = useSelector((state: any) => state.auth);
   console.log(user);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {user?.role === "Administrator" && (
-          <>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          {user?.role === "Administrator" && (
+            <>
+              <Route
+                path="/main"
+                element={
+                  <Layout>
+                    <MainAdministrator />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/shortSummary"
+                element={
+                  <Layout>
+                    <ShortSummary />
+                  </Layout>
+                }
+              />
+            </>
+          )}
+
+          {user?.role === "User" && (
             <Route
               path="/main"
               element={
                 <Layout>
-                  <MainAdministrator />
+                  <UserMain />
                 </Layout>
               }
             />
-            <Route
-              path="/shortSummary"
-              element={
-                <Layout>
-                  <ShortSummary />
-                </Layout>
-              }
-            />
-          </>
-        )}
+          )}
 
-        {user?.role === "User" && (
+          <Route path="/" element={<Auth />} />
+
           <Route
-            path="/main"
+            path="/schedules"
             element={
               <Layout>
-                <UserMain />
+                <Schedules />
               </Layout>
             }
           />
-        )}
-
-        <Route path="/" element={<Auth />} />
-
-        <Route
-          path="/schedules"
-          element={
-            <Layout>
-              <Schedules />
-            </Layout>
-          }
-        />
-        <Route
-          path="/flights"
-          element={
-            <Layout>
-              <Flights />
-            </Layout>
-          }
-        />
-        <Route
-          path="/confirmation"
-          element={
-            <Layout>
-              <BookingConfirmation />
-            </Layout>
-          }
-        />
-        <Route
-          path="/summary"
-          element={
-            <Layout>
-              <Summary />
-            </Layout>
-          }
-        />
-        <Route
-          path="/defaultsummary"
-          element={
-            <Layout>
-              <DefaultSummary />
-            </Layout>
-          }
-        />
-        <Route
-          path="/amenities"
-          element={
-            <Layout>
-              <Amenities />
-            </Layout>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/flights"
+            element={
+              <Layout>
+                <Flights />
+              </Layout>
+            }
+          />
+          <Route
+            path="/confirmation"
+            element={
+              <Layout>
+                <BookingConfirmation />
+              </Layout>
+            }
+          />
+          <Route
+            path="/summary"
+            element={
+              <Layout>
+                <Summary />
+              </Layout>
+            }
+          />
+          <Route
+            path="/defaultsummary"
+            element={
+              <Layout>
+                <DefaultSummary />
+              </Layout>
+            }
+          />
+          <Route
+            path="/amenities"
+            element={
+              <Layout>
+                <Amenities />
+              </Layout>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

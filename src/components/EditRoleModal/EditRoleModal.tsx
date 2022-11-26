@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./EditRoleModal.module.scss";
 import { FC } from "react";
-import { Button, Form, Input, Modal, Radio, Select } from "antd";
+import { Button, Form, Input, Modal, Radio, Select, notification } from "antd";
 import { useChangeUserRoleMutation } from "store/services/office";
 interface EditRoleModalProps {
   userData: any;
@@ -18,9 +18,16 @@ const EditRoleModal: FC<EditRoleModalProps> = ({
   const [form] = Form.useForm();
 
   console.log(userData);
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log(values);
-    changeUserRole({ ...values, email: userData?.email });
+
+    try {
+      await changeUserRole({ ...values, email: userData?.email });
+      notification.success({ message: "Роль изменена" });
+      onClose();
+    } catch (e: any) {
+      notification.error({ message: e.message });
+    }
   };
 
   useEffect(() => {

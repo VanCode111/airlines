@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import styles from "./PassengerDetail.module.scss";
 import Card from "components/Card/Card";
 import { Button, DatePicker, Form, Input, Select } from "antd";
+import { useQuery } from "react-query";
+import apiInstance from "api/index";
 
 interface PassengerDetailProps {
   addPassenger: (passenger: any) => void;
@@ -9,6 +11,11 @@ interface PassengerDetailProps {
 
 const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
   const [form] = Form.useForm();
+
+  const { data: countries, isLoading } = useQuery(
+    "getCountries",
+    apiInstance.getCountries
+  );
 
   const onFinish = (values: any) => {
     addPassenger(values);
@@ -40,7 +47,9 @@ const PassengerDetail: FC<PassengerDetailProps> = ({ addPassenger }) => {
             </Form.Item>
             <Form.Item label="Passport country" name="country">
               <Select className={styles.select}>
-                <Select.Option value={"Albania"}>{"Albania"}</Select.Option>
+                {countries?.data?.map((item: any) => (
+                  <Select.Option value={item.Name}>{item.Name}</Select.Option>
+                ))}
               </Select>
             </Form.Item>
             <Form.Item label="Phone" name="phone">

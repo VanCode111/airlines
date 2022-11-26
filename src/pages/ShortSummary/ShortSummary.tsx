@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ShortSummary.module.scss";
 import logo from "assets/logo.png";
 import Card from "components/Card/Card";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
   useGetAverageSeatsPriceQuery,
@@ -12,12 +12,32 @@ import {
 
 const ShortSummary = () => {
   const navigate = useNavigate();
-  const { data: emptySeats } = useGetFreeSeatsQuery(null);
-  const { data: report } = useGetReportQuery(null);
-  const { data: seatsPrice } = useGetAverageSeatsPriceQuery(null);
+  const { data: emptySeats, isLoading: loading1 } = useGetFreeSeatsQuery(null);
+  const { data: report, isLoading: loading2 } = useGetReportQuery(null);
+  const { data: seatsPrice, isLoading: loading3 } =
+    useGetAverageSeatsPriceQuery(null);
+
+  const isLoading = loading3 || loading2 || loading1;
+  const [ms, setms] = useState(0);
+  const days = report?.days
+    ? Object.entries(report.days).sort((a: any, b: any) => a[1] - b[1])
+    : [];
+
   let seatsPrices = seatsPrice ? Object.values(seatsPrice) : [];
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setms(Date.now());
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}
+      >
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -29,24 +49,44 @@ const ShortSummary = () => {
       />
       {report && (
         <Card label="In the last 30 days...">
-          <Card label="Flights">
-            <p>Number confirmed: {report.confirmed}</p>
-            <p>Number cancelled: {report.unconfirmed}</p>
-            <p>
-              Average daily flight time: {Math.floor(report.averageTime)}{" "}
-              minutes
-            </p>
-          </Card>
-          <Card label="Top customers (Number of purchases)">
-            {Object.entries(report.bestBuyers).map(([key, value], index) => (
-              <p>{`${index + 1} ${key} (${value} Tickets)`}</p>
-            ))}
-          </Card>
-          <Card label="Top Amonic Airlines offices">
-            {Object.entries(report.bestWorkers).map(([key, value], index) => (
-              <p>{`${index + 1} ${key} (${value})`}</p>
-            ))}
-          </Card>
+          <div className={styles.cardWrapper}>
+            <Card label="Flights">
+              <p>Number confirmed: {report.confirmed}</p>
+              <p>Number cancelled: {report.unconfirmed}</p>
+              <p>
+                Average daily flight time: {Math.floor(report.averageTime)}{" "}
+                minutes
+              </p>
+            </Card>
+            <Card label="Top customers (Number of purchases)">
+              {Object.entries(report.bestBuyers).map(([key, value], index) => (
+                <p>{`${index + 1} ${key} (${value} Tickets)`}</p>
+              ))}
+            </Card>
+            <Card label="Number of passengers flying">
+              <>
+                {days[0] && (
+                  <p>
+                    <>
+                      Busiest Day: {days[0][0]} with {days[0][1]} flying
+                    </>
+                  </p>
+                )}
+                {days[1] && (
+                  <p>
+                    <>
+                      Most quiet day: {days[1][0]} with {days[1][1]} flying
+                    </>
+                  </p>
+                )}
+              </>
+            </Card>
+            <Card label="Top Amonic Airlines offices">
+              {Object.entries(report.bestWorkers).map(([key, value], index) => (
+                <p>{`${index + 1} ${key} (${value})`}</p>
+              ))}
+            </Card>
+          </div>
         </Card>
       )}
 
@@ -71,7 +111,11 @@ const ShortSummary = () => {
       )}
 
       <div className={styles.innerWrapper} style={{ marginTop: "20px" }}>
-        <span>Report generated in: seconds</span>
+        {seatsPrice && (
+          <span>
+            Report generated in: {Math.floor(Date.now() - ms) / 1000} seconds
+          </span>
+        )}
         <Button danger onClick={() => navigate("/main")}>
           Close
         </Button>
