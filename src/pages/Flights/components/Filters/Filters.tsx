@@ -24,7 +24,7 @@ const Filters = ({
     useGetCabinTypesQuery(null);
 
   const onFinish = (data: any) => {
-    console.log(data);
+    console.log(data, "data");
     applyFilters(data);
   };
 

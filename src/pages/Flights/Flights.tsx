@@ -69,10 +69,14 @@ const Flights = () => {
 
   const applyFilters = (filters: any) => {
     let { from, to, cabinType, outbound, returnDate } = filters;
-    outbound = convertDate(filters.outbound);
-    returnDate = convertDate(filters.returnDate);
-    console.log(returnDate);
+    console.log(outbound, returnDate);
+    outbound = outbound ? convertDate(filters.outbound) : undefined;
+    returnDate = returnDate ? convertDate(filters.returnDate) : undefined;
+    console.log(outbound, returnDate, "date");
     filters = { from, to, cabinType, date: outbound };
+    if (outbound) {
+      filters["date"] = outbound;
+    }
     const returnFilters: any = {
       from: to,
       to: from,
